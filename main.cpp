@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Player.h"
+#include "Tile.h"
 
 using namespace std;
 
@@ -21,21 +22,34 @@ int main()
 { //456 is the start of pacman stuff
 	//sf::IntRect testRect(456, 0, 16, 16);
 	bool isMoving = false;
+	bool dead = false;
+	sf::Int32 aniSpeed = 200;
 
 	sf::Clock pacClock;
-	sf::RenderWindow window(sf::VideoMode(1900, 1080), "Pacman!");
+	sf::Clock aniClock;
+
+	sf::RenderWindow window(sf::VideoMode(672, 864), "Pacman!"); //1900 x 1080 was what it was before classic pacman is 224 x 288
+
 	sf::Texture* pTexture = new sf::Texture();
 	if (!pTexture->loadFromFile("Pacman_spritesheet.png")){
 		return EXIT_FAILURE;
 	}
+
 	sf::Sprite* pSprite = new sf::Sprite();
+	sf::Sprite* tSprite = new sf::Sprite();
+	sf::Sprite* tSprite2 = new sf::Sprite();
+	sf::Sprite* tSprite3 = new sf::Sprite();
+
 	pSprite->setTexture(*pTexture, true);
-	//pSprite->setTextureRect(testRect);
-	//pSprite->setScale(3.f, 3.f);
+	tSprite->setTexture(*pTexture, true);
+	tSprite2->setTexture(*pTexture, true);
+	tSprite3->setTexture(*pTexture, true);
+
 	
 	Player pacman(pSprite, pTexture);
-
-
+	Tile testTile(tSprite, pTexture);
+	Tile testTile2(tSprite2, pTexture, 16, 0, 32, 0);
+	Tile testTile3(tSprite3, pTexture, 8, 240, 16, 40);
 
 	while (window.isOpen())
 	{
@@ -62,16 +76,34 @@ int main()
 					pacClock.restart();
 					isMoving = true;
 				}
-				isMoving = true;
+				if (event.key.code == sf::Keyboard::Escape){
+					isMoving = false;
+					dead = true;
+				}
 			}
 		}
-		if (isMoving == true){
-			
-			pacman.movePlayer(&pacClock, pacman.getDirection());
-			pacman.playRun();
+		if (!dead){
+			if (isMoving == true){
+				pacman.movePlayer(&pacClock, pacman.getDirection());
+
+				if (aniClock.getElapsedTime().asMilliseconds() >= aniSpeed){
+					pacman.playRun();
+					aniClock.restart();
+				}
+			}
 		}
-		window.clear();
+		else{
+			if (aniClock.getElapsedTime().asMilliseconds() >= aniSpeed){
+				pacman.playDeath();
+				aniClock.restart();
+			}
+		}
+		window.clear(sf::Color::White);
+		window.draw(*(testTile.getSprite()));
+		window.draw(*(testTile2.getSprite()));
+		window.draw(*(testTile3.getSprite()));
 		window.draw(*(pacman.getSprite()));
+		
 		window.display();
 	}
 
