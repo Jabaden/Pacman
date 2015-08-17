@@ -8,9 +8,15 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <string>
 #include "Player.h"
 #include "Tile.h"
-
+#include "Game.h"
+#include "Ghost.h"
+#include "Level.h"
 using namespace std;
 
 #define UP 0
@@ -18,9 +24,18 @@ using namespace std;
 #define LEFT 270
 #define RIGHT 90
 
-int main()
+float GLOBAL_SCALE;
+
+int main(int argc, char** argv)
 { //456 is the start of pacman stuff
 	//sf::IntRect testRect(456, 0, 16, 16);
+
+	fstream levelOneFile;
+
+	GLOBAL_SCALE = 3.f;
+
+	cout << "hello world";
+
 	bool isMoving = false;
 	bool dead = false;
 	sf::Int32 aniSpeed = 200;
@@ -28,7 +43,7 @@ int main()
 	sf::Clock pacClock;
 	sf::Clock aniClock;
 
-	sf::RenderWindow window(sf::VideoMode(672, 864), "Pacman!"); //1900 x 1080 was what it was before classic pacman is 224 x 288
+	sf::RenderWindow window(sf::VideoMode(672, 864), "Pacman!"); //classic pacman is 224 x 288  84 x 108 tiles
 
 	sf::Texture* pTexture = new sf::Texture();
 	if (!pTexture->loadFromFile("Pacman_spritesheet.png")){
@@ -36,20 +51,38 @@ int main()
 	}
 
 	sf::Sprite* pSprite = new sf::Sprite();
+	sf::Sprite* gSprite = new sf::Sprite();
 	sf::Sprite* tSprite = new sf::Sprite();
 	sf::Sprite* tSprite2 = new sf::Sprite();
 	sf::Sprite* tSprite3 = new sf::Sprite();
+	sf::Sprite* tSprite4 = new sf::Sprite();
 
 	pSprite->setTexture(*pTexture, true);
-	tSprite->setTexture(*pTexture, true);
-	tSprite2->setTexture(*pTexture, true);
-	tSprite3->setTexture(*pTexture, true);
 
 	
-	Player pacman(pSprite, pTexture);
-	Tile testTile(tSprite, pTexture);
-	Tile testTile2(tSprite2, pTexture, 16, 0, 32, 0);
-	Tile testTile3(tSprite3, pTexture, 8, 240, 16, 40);
+	Ghost red(gSprite, pTexture);
+
+	Tile* testTile = new Tile(tSprite, pTexture, 216, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #7
+	
+	cout << "testTile's wall status is" << testTile->getWallStatus() << endl;
+	
+	Tile* testTile2 = new Tile(tSprite2, pTexture, 16, 8, 200, 0, false); //#1  this is a dot
+	Tile* testTile3 = new Tile(tSprite3, pTexture, 8, 240, 16, 500, true);//ghost
+	Tile* testTile4 = new Tile(tSprite4, pTexture, 8, 0, 16 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); //#4
+
+	Tile** arrayOfTiles[3];
+
+	Level* levelOne = new Level(levelOneFile);
+
+	Tile*** tempTriple = levelOne->getLevelMatrix();
+	levelOne->setTile(1, 1, testTile);
+	levelOne->setTile(2, 1, testTile4);
+	cout << "the wallstatus of [1][1] is " << levelOne->getLevelMatrix()[0][0]->getWallStatus() << endl;
+
+	Player* pacman = new Player(pSprite, pTexture, levelOne);
+	//levelOne->getLevelMatrix()[0][0] = testTile;
+	//levelOne->getLevelMatrix()[0][1] = testTile2;
+	//levelOne->getLevelMatrix()[0][2] = testTile3;
 
 	while (window.isOpen())
 	{
@@ -59,23 +92,27 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 			if (event.type == sf::Event::KeyPressed){
-				if (event.key.code == sf::Keyboard::W){
-					pacman.setDirection(UP);
-				}
-				if (event.key.code == sf::Keyboard::A){
-					pacman.setDirection(LEFT);
-				}
-				if (event.key.code == sf::Keyboard::S){
-					pacman.setDirection(DOWN);
-				}
-				if (event.key.code == sf::Keyboard::D){
-					
-					pacman.setDirection(RIGHT);
-				}
 				if (isMoving == false){
 					pacClock.restart();
+				}
+				if (event.key.code == sf::Keyboard::W){
+					pacman->setDirection(UP);
 					isMoving = true;
 				}
+				else if (event.key.code == sf::Keyboard::A){
+					pacman->setDirection(LEFT);
+					isMoving = true;
+				}
+				else if (event.key.code == sf::Keyboard::S){
+					pacman->setDirection(DOWN);
+					isMoving = true;
+				}
+				else if (event.key.code == sf::Keyboard::D){
+					cout << "i pressed right (D)" << endl;
+					pacman->setDirection(RIGHT);
+					isMoving = true;
+				}
+				
 				if (event.key.code == sf::Keyboard::Escape){
 					isMoving = false;
 					dead = true;
@@ -84,29 +121,28 @@ int main()
 		}
 		if (!dead){
 			if (isMoving == true){
-				pacman.movePlayer(&pacClock, pacman.getDirection());
+				pacman->movePlayer(&pacClock, pacman->getDirection());
 
 				if (aniClock.getElapsedTime().asMilliseconds() >= aniSpeed){
-					pacman.playRun();
+					pacman->playRun();
 					aniClock.restart();
 				}
 			}
 		}
 		else{
 			if (aniClock.getElapsedTime().asMilliseconds() >= aniSpeed){
-				pacman.playDeath();
+				pacman->playDeath();
 				aniClock.restart();
 			}
 		}
-		window.clear(sf::Color::White);
-		window.draw(*(testTile.getSprite()));
-		window.draw(*(testTile2.getSprite()));
-		window.draw(*(testTile3.getSprite()));
-		window.draw(*(pacman.getSprite()));
+		pacman->checkPosition(&window);
+		window.clear(sf::Color::Black);
+		levelOne->renderLevel(&window);
+		window.draw(*(red.getSprite()));
+		window.draw(*(pacman->getSprite()));
 		
 		window.display();
 	}
-
 	return 0;
 }
 //test update

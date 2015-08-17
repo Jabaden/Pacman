@@ -1,0 +1,12 @@
+#one number
+#first number = tile type
+#
+#1 = little dot
+#2 = big dot
+#3 = ^> wall
+#4 = <> wall
+#5 = >v wall
+#6 = ^V wall
+#7 = v> wall
+#8 = V< wall
+8 10
