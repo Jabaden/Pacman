@@ -1,4 +1,4 @@
-﻿Build started 8/16/2015 9:00:54 PM.
+﻿Build started 8/17/2015 11:38:06 PM.
      1>Project "D:\Users\Andy\Desktop\cpp projects\Pacman\Pacman\Pacman.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          D:\Program Files (x86)\VC\bin\CL.exe /c /I"D:\Program Files (x86)\SFML\SFML-2.3.1\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D SFML_STATIC /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -21,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.14
+Time Elapsed 00:00:01.46

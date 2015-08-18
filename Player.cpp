@@ -6,7 +6,7 @@ Player::Player(sf::Sprite* spr, sf::Texture* txt, Level* lvl){
 	textureBox = new sf::IntRect(456,0,16,16); //left, top , width, height, 456 is start of spritesheet
 	sprite->setTextureRect(*textureBox);
 	sprite->setScale(GLOBAL_SCALE, GLOBAL_SCALE);
-	sprite->setPosition(-4 * GLOBAL_SCALE, -4 * GLOBAL_SCALE);
+	sprite->setPosition(4 * GLOBAL_SCALE, 4 * GLOBAL_SCALE); //was -4, -4
 	//sprite->setOrigin(sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().height / 2);
 	center = new sf::Vector2i();
 	center->x = rint(sprite->getPosition().x + sprite->getGlobalBounds().width / 2);
@@ -26,50 +26,58 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 	sf::Vector2i pacLocation = this->checkPosition();
 	float delta = clk->restart().asSeconds();
 	bool isAtCenter = checkCenter(pacLocation.x, pacLocation.y);
-	if (isAtCenter){
-		cout << "HELP HELP IM BEING RESET" << endl;
-		this->upDown = false;
-		this->leftRight = false;
-	}
-	cout << "updown is " << upDown << "leftRight is " << leftRight << endl;
+	//if (isAtCenter){
+		//cout << "HELP HELP IM BEING RESET" << endl;
+		//this->upDown = false;
+		//this->leftRight = false;
+	//}
+	//cout << "updown is " << upDown << "leftRight is " << leftRight << endl;
 	switch (direction){
 	case 0: //up
 		//if (this->leftRight){
 			//return;
 		//}
 		//this->upDown = true;
-		if (pacLocation.y == 0){
-			return;
-		}
-		//if (isAtCenter){
-			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
-				//return;
-			//}
+		//if (pacLocation.y == 0){
+			//return;
 		//}
+		if (isAtCenter){
+			if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
+				upDown = false;
+				leftRight = false;
+				return;
+			}
+		}
 		this->sprite->move(0, -(speed * delta));
 		break;
 	case 90:
-		//if (isAtCenter){
-			//if (level->getLevelMatrix()[((int)pacLocation.x) + 1][(int)pacLocation.y]->getWallStatus() == true){
-				//return;
-			//}
-		//}
+		if (isAtCenter){
+			if (level->getLevelMatrix()[((int)pacLocation.x) + 1][(int)pacLocation.y]->getWallStatus() == true){
+				upDown = false;
+				leftRight = false;
+				return;
+			}
+		}
 		this->sprite->move(speed * delta, 0);
 		break;
 	case 180:
-		//if (isAtCenter){
-			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) + 1]->getWallStatus() == true){
-				//return;
-			//}
-		//}
+		if (isAtCenter){
+			if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) + 1]->getWallStatus() == true){
+				upDown = false;
+				leftRight = false;
+				return;
+			}
+		}
 		this->sprite->move(0, speed * delta);
 		break;
 	case 270:
-		//if (isAtCenter){
-			//if (level->getLevelMatrix()[((int)pacLocation.x) - 1][(int)pacLocation.y]->getWallStatus() == true){
-				//return;
-			//}
-		//}
+		if (isAtCenter){
+			if (level->getLevelMatrix()[((int)pacLocation.x) - 1][(int)pacLocation.y]->getWallStatus() == true){
+				upDown = false;
+				leftRight = false;
+				return;
+			}
+		}
 		this->sprite->move(-(speed * delta), 0);
 		break;
 	}
@@ -81,6 +89,7 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 	//cout << "the center of tile [1][2] is " << level->getLevelMatrix()[0][0]->getCenter()->x << " " << level->getLevelMatrix()[0][0]->getCenter()->y << endl;
 	//cout << "the center of my tile is" << level->getLevelMatrix()[tile->x][tile->y]->center->x << ", " << level->getLevelMatrix()[tile->x][tile->y]->center->y << endl;
 	//cout << "the center of pacman is " << this->center->x << " " << this->center->y << endl;
+	//cout << "the center of my tile is" << level->getLevelMatrix()[tile->x][tile->y]->center->x << ", " << level->getLevelMatrix()[tile->x][tile->y]->center->y << endl;
 }
 void Player::setDirection(int dir){
 	sf::Vector2i pacLocation = this->checkPosition();
@@ -90,10 +99,30 @@ void Player::setDirection(int dir){
 		return;
 	}
 	if (dir == 270 || dir == 90){
+		//if (dir == 90){
+			//if (level->getLevelMatrix()[((int)pacLocation.x) + 1][(int)pacLocation.y]->getWallStatus() == true){
+				//return;
+			//}
+		//}
+		//else{
+			//if (level->getLevelMatrix()[((int)pacLocation.x) - 1][(int)pacLocation.y]->getWallStatus() == true){
+				//return;
+			//}
+		//}
 		leftRight = true;
 		upDown = false;
 	}
 	else{
+		//if (dir == 0){
+			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
+				//return;
+			//}
+		//}
+		//else{
+			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) + 1]->getWallStatus() == true){
+				//return;
+			//}
+		//}
 		leftRight = false;
 		upDown = true;
 	}

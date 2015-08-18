@@ -15,7 +15,7 @@ class Level{
 private:
 	Tile*** levelMatrix;
 public:
-	Level(fstream& levelFile);
+	Level(fstream& levelFile, sf::Texture* txt);
 	Tile*** getLevelMatrix();
 	void setTile(int x, int y, Tile* tile);
 	void renderLevel(sf::RenderWindow* wnd);

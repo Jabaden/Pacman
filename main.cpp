@@ -72,12 +72,12 @@ int main(int argc, char** argv)
 
 	Tile** arrayOfTiles[3];
 
-	Level* levelOne = new Level(levelOneFile);
+	Level* levelOne = new Level(levelOneFile, pTexture);
 
 	Tile*** tempTriple = levelOne->getLevelMatrix();
-	levelOne->setTile(1, 1, testTile);
-	levelOne->setTile(2, 1, testTile4);
-	cout << "the wallstatus of [1][1] is " << levelOne->getLevelMatrix()[0][0]->getWallStatus() << endl;
+	//levelOne->setTile(1, 1, testTile);
+	//levelOne->setTile(2, 1, testTile4);
+	//cout << "the wallstatus of [1][1] is " << levelOne->getLevelMatrix()[0][0]->getWallStatus() << endl;
 
 	Player* pacman = new Player(pSprite, pTexture, levelOne);
 	//levelOne->getLevelMatrix()[0][0] = testTile;
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 					isMoving = true;
 				}
 				else if (event.key.code == sf::Keyboard::D){
-					cout << "i pressed right (D)" << endl;
+					//cout << "i pressed right (D)" << endl;
 					pacman->setDirection(RIGHT);
 					isMoving = true;
 				}
