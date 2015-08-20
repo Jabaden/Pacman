@@ -26,21 +26,8 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 	sf::Vector2i pacLocation = this->checkPosition();
 	float delta = clk->restart().asSeconds();
 	bool isAtCenter = checkCenter(pacLocation.x, pacLocation.y);
-	//if (isAtCenter){
-		//cout << "HELP HELP IM BEING RESET" << endl;
-		//this->upDown = false;
-		//this->leftRight = false;
-	//}
-	//cout << "updown is " << upDown << "leftRight is " << leftRight << endl;
 	switch (direction){
 	case 0: //up
-		//if (this->leftRight){
-			//return;
-		//}
-		//this->upDown = true;
-		//if (pacLocation.y == 0){
-			//return;
-		//}
 		if (isAtCenter){
 			if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
 				upDown = false;

@@ -34,14 +34,13 @@ int main(int argc, char** argv)
 
 	GLOBAL_SCALE = 3.f;
 
-	cout << "hello world";
-
 	bool isMoving = false;
 	bool dead = false;
 	sf::Int32 aniSpeed = 200;
 
 	sf::Clock pacClock;
 	sf::Clock aniClock;
+	sf::Clock redClock;
 
 	sf::RenderWindow window(sf::VideoMode(672, 864), "Pacman!"); //classic pacman is 224 x 288  84 x 108 tiles
 
@@ -59,9 +58,6 @@ int main(int argc, char** argv)
 
 	pSprite->setTexture(*pTexture, true);
 
-	
-	Ghost red(gSprite, pTexture);
-
 	Tile* testTile = new Tile(tSprite, pTexture, 216, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #7
 	
 	cout << "testTile's wall status is" << testTile->getWallStatus() << endl;
@@ -75,14 +71,9 @@ int main(int argc, char** argv)
 	Level* levelOne = new Level(levelOneFile, pTexture);
 
 	Tile*** tempTriple = levelOne->getLevelMatrix();
-	//levelOne->setTile(1, 1, testTile);
-	//levelOne->setTile(2, 1, testTile4);
-	//cout << "the wallstatus of [1][1] is " << levelOne->getLevelMatrix()[0][0]->getWallStatus() << endl;
 
 	Player* pacman = new Player(pSprite, pTexture, levelOne);
-	//levelOne->getLevelMatrix()[0][0] = testTile;
-	//levelOne->getLevelMatrix()[0][1] = testTile2;
-	//levelOne->getLevelMatrix()[0][2] = testTile3;
+	Ghost red(gSprite, pTexture, levelOne);
 
 	while (window.isOpen())
 	{
@@ -135,6 +126,7 @@ int main(int argc, char** argv)
 				aniClock.restart();
 			}
 		}
+		red.moveGhost(&redClock, pacman, levelOne);
 		pacman->checkPosition(&window);
 		window.clear(sf::Color::Black);
 		levelOne->renderLevel(&window);

@@ -4,20 +4,6 @@
 #include <fstream>
 #include <cstring>
 #include <string>
-//DONT FORGET THAT YOU NEED TO POSITION THEM CORRECTLY. LOOK AT GLOBAL_SCALE * SOMETHING, THAT SOMETHING NEEDS TO CHANGE DEPENDING 
-//ON ITS X,Y COORDINATE IN THE 2D ARRAY
-
-//Tile* testTile2 = new Tile(tSprite2, pTexture, 16, 8, 200, 0, false); //#1  this is a dot
-//Tile* testTile = new Tile(tSprite, pTexture, 8, 24, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); #2
-//Tile* testTile = new Tile(tSprite, pTexture, 0, 0, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #3
-//Tile* testTile4 = new Tile(tSprite4, pTexture, 8, 0, 16 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); //#4
-//Tile* testTile = new Tile(tSprite, pTexture, 216, 0, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #5
-//Tile* testTile = new Tile(tSprite, pTexture, 0, 16, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #6
-//Tile* testTile = new Tile(tSprite, pTexture, 0, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #7
-//Tile* testTile = new Tile(tSprite, pTexture, 216, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #8
-//Tile* testTile = new Tile(tSprite, pTexture, 0, 80, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // NOTHING
-
-
 using namespace std;
 
 Level::Level(fstream& levelFile, sf::Texture* txt){
@@ -75,7 +61,6 @@ Level::Level(fstream& levelFile, sf::Texture* txt){
 				else if (type == 6){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 16, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
 				}
-
 				else if (type == 7){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 72, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
 				}
@@ -102,59 +87,6 @@ Level::Level(fstream& levelFile, sf::Texture* txt){
 				//cout << "The current column is " << column << " and the current row is " << row << endl;
 			}
 		}
-		/*
-		else{
-			//IF ITS ONLY ONE HERE
-			sf::Sprite* tempSprite = new sf::Sprite();
-			if (type == 1){
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 16, 8, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false); //#1  this is a dot
-			}
-			else if (type == 2){
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 24, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false);
-			}
-			else if (type == 3){
-				//Tile* testTile = new Tile(tSprite, pTexture, 0, 0, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #3
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-			else if (type == 4){
-				//Tile* testTile4 = new Tile(tSprite4, pTexture, 8, 0, 16 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); //#4
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-			else if (type == 5){
-				//Tile* testTile = new Tile(tSprite, pTexture, 216, 0, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #5
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 216, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-			else if (type == 6){
-				//Tile* testTile = new Tile(tSprite, pTexture, 0, 16, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #6
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 216, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-
-			else if (type == 7){
-				//Tile* testTile = new Tile(tSprite, pTexture, 0, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #7
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 72, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-			else if (type == 8){
-				//Tile* testTile = new Tile(tSprite, pTexture, 216, 72, 8 * GLOBAL_SCALE, 8 * GLOBAL_SCALE, true); // #8
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 216, 72, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
-			}
-			else{
-				continue;
-			}
-			column++;
-			if (column > 28){
-				column = 0;
-				row++;
-			}
-		}
-		*/
-		
-	
-	//for (int i = 0; i < 28; i++){
-		//for (int j = 0; j < 36; j++){
-			//sf::Sprite* tempSprite = new sf::Sprite();
-			//levelMatrix[i][j] = new Tile(i * (8 * GLOBAL_SCALE), j * (8 * GLOBAL_SCALE));
-		//}
-	//}
 	levelFile.close();
 }
 
