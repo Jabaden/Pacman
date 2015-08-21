@@ -41,6 +41,7 @@ int main(int argc, char** argv)
 	sf::Clock pacClock;
 	sf::Clock aniClock;
 	sf::Clock redClock;
+	sf::Clock pinkClock;
 
 	sf::RenderWindow window(sf::VideoMode(672, 864), "Pacman!"); //classic pacman is 224 x 288  84 x 108 tiles
 
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
 
 	sf::Sprite* pSprite = new sf::Sprite();
 	sf::Sprite* gSprite = new sf::Sprite();
+	sf::Sprite* pinkSprite = new sf::Sprite();
 	sf::Sprite* tSprite = new sf::Sprite();
 	sf::Sprite* tSprite2 = new sf::Sprite();
 	sf::Sprite* tSprite3 = new sf::Sprite();
@@ -73,7 +75,8 @@ int main(int argc, char** argv)
 	Tile*** tempTriple = levelOne->getLevelMatrix();
 
 	Player* pacman = new Player(pSprite, pTexture, levelOne);
-	Ghost red(gSprite, pTexture, levelOne);
+	Ghost pink(pinkSprite, pTexture, levelOne, "Pink");
+	Ghost red(gSprite, pTexture, levelOne, "Red");
 
 	while (window.isOpen())
 	{
@@ -127,10 +130,12 @@ int main(int argc, char** argv)
 			}
 		}
 		red.moveGhost(&redClock, pacman, levelOne);
+		//pink.moveGhost(&pinkClock, pacman, levelOne);
 		pacman->checkPosition(&window);
 		window.clear(sf::Color::Black);
 		levelOne->renderLevel(&window);
 		window.draw(*(red.getSprite()));
+		window.draw(*(pink.getSprite()));
 		window.draw(*(pacman->getSprite()));
 		
 		window.display();

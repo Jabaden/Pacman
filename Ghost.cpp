@@ -9,11 +9,17 @@
 #define RIGHT 3
 using namespace std;
 
-Ghost::Ghost(sf::Sprite* spr, sf::Texture* txt, Level* lvl){
+Ghost::Ghost(sf::Sprite* spr, sf::Texture* txt, Level* lvl, string clr){
+	color = clr;
 	sprite = spr;
 	texture = txt;
 	sprite->setTexture(*txt, true);
-	textureBox = new sf::IntRect(456, 64, 16, 16); //left, top , width, height, 456 is start of spritesheet
+	if (clr == "Red"){
+		textureBox = new sf::IntRect(456, 64, 16, 16); //left, top , width, height, 456 is start of spritesheet
+	}
+	else if (clr == "Pink"){
+		textureBox = new sf::IntRect(456, 80, 16, 16); //left, top , width, height, 456 is start of spritesheet
+	}
 	sprite->setTextureRect(*textureBox);
 	sprite->setScale(GLOBAL_SCALE, GLOBAL_SCALE);
 	sprite->setPosition(204 * GLOBAL_SCALE, 4 * GLOBAL_SCALE);
@@ -118,13 +124,29 @@ void Ghost::moveGhost(sf::Clock* clk, Player* pman, Level* lvl){
 	float delta = clk->restart().asSeconds();
 	bool isAtCenter = this->checkCenter(this->tile->x, this->tile->y);
 	if (isAtCenter){
+		//cout << "im at the center" << endl;
 		if (this->isIntersection()){
-			this->target = &(this->findRedTarget(pman));
+			//cout << "this is an intersection" << endl;
+			if (this->color == "Red"){
+				sf::Vector2i tempTarget = (this->findRedTarget(pman));
+				//this->target = (this->findRedTarget(pman));
+				this->target->x = tempTarget.x;
+				this->target->y = tempTarget.y;
+				//cout << "inside move ghost after findRedTarget" << endl;
+				//cout << target->x << " " << target->y << endl;
+			}
+			else if (this->color == "Pink"){
+				sf::Vector2i tempTarget = (this->findPinkTarget(pman));
+				//this->target = (this->findRedTarget(pman));
+				this->target->x = tempTarget.x;
+				this->target->y = tempTarget.y;
+				//this->target = &(this->findPinkTarget(pman));
+				//cout << "inside move ghost after findPinkTarget" << endl;
+				//cout << target->x << " " << target->y << endl;
+			}
 			this->direction = findShortestpath(lvl);
-			//set the direction table, maybe artifically create manipulate the direction array?
 		}
 		this->checkForwardPosition();
-		//TODO
 	}
 	int direction = this->getDirection();
 	if (direction == 0){
@@ -156,7 +178,36 @@ bool Ghost::isIntersection(){
 }
 
 sf::Vector2i Ghost::findRedTarget(Player* pacman){
-	return pacman->checkPosition();
+	sf::Vector2i temp = pacman->checkPosition();
+	//cout << "inside findRedTarget" << temp.x << " " << temp.y << endl;
+	//return pacman->checkPosition();
+	return temp;
+}
+
+sf::Vector2i Ghost::findPinkTarget(Player* pacman){
+	sf::Vector2i tempTarget = pacman->checkPosition();
+	cout << "inside findPinkTarget" << tempTarget.x << " " << tempTarget.y << endl;
+	if (pacman->getDirection() == 0){
+		tempTarget.x = tempTarget.x - 4; //this is a strange exception in the games code
+		tempTarget.y = tempTarget.y - 4; 
+	}
+	else if (pacman->getDirection() == 90){
+		tempTarget.x = tempTarget.x + 4;
+	}
+	else if (pacman->getDirection() == 180){
+		tempTarget.y = tempTarget.y + 4;
+	}
+	else{
+		tempTarget.x = tempTarget.x - 4;
+	}
+	if (tempTarget.x < 0){
+		tempTarget.x = 0;
+	}
+	if (tempTarget.y < 0){
+		tempTarget.y = 0;
+	}
+	cout << "Pinks target is, " << tempTarget.x << " " << tempTarget.y << endl;
+	return tempTarget;
 }
 
 int Ghost::findShortestpath(Level* lvl){
@@ -170,6 +221,8 @@ int Ghost::findShortestpath(Level* lvl){
 	double returnDistance = 0;
 	sf::Vector2i* tileCenter;
 	sf::Vector2i ghostLocation = this->checkGhostPosition();
+	cout << "target in FSP is " << this->target->x << " " << this->target->y << endl;
+	cout << "ghostLocation " << ghostLocation.x << " " << ghostLocation.y << endl;
 	sf::Vector2i* targetCenter = (lvl->getLevelMatrix()[this->target->x][this->target->y]->getCenter());
 	if (dir != 180){ //check up
 		if (level->getLevelMatrix()[((int)ghostLocation.x) + 0][((int)ghostLocation.y) - 1]->getWallStatus() == false){

@@ -182,13 +182,14 @@ void Player::playDeath(){
 }
 
 sf::Vector2i Player::checkPosition(){
+	//cout << "inside checkPosition " << tile->x << " " << tile->y << endl;
 	return *tile;
 }
 
 sf::Vector2i Player::checkPosition(sf::RenderWindow* wnd){
 	//sf::Vector2i test;
 	//float xCoord = floor(((this->getSprite()->getPosition().x)/24));
-	//float yCoord = floor(((this->getSprite()->getPosition().y) / 24));
+	//float yCoord = floor(((this->getSprite()->y().getPosition) / 24));
 	float xCoord = center->x;
 	float yCoord = center->y;
 	std::string newTitle = "";

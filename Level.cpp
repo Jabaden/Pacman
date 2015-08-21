@@ -71,7 +71,7 @@ Level::Level(fstream& levelFile, sf::Texture* txt){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 216, 8, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
 				}
 				else if (type == 0){
-					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true);
+					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false);
 				}
 				else if (sType == "B"){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false);
