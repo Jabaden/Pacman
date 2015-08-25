@@ -14,10 +14,13 @@ using namespace std;
 class Level{
 private:
 	Tile*** levelMatrix;
+	Tile*** copyMatrix;
 public:
-	Level(fstream& levelFile, sf::Texture* txt);
+	int dots = 0;
+	Level(fstream& levelFile, sf::Texture* txt, int level);
 	Tile*** getLevelMatrix();
 	void setTile(int x, int y, Tile* tile);
 	void renderLevel(sf::RenderWindow* wnd);
+	void resetLevel(fstream&, sf::Texture* txt, int level);
 };
 #endif

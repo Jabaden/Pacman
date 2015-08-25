@@ -10,17 +10,24 @@ private:
 	bool isPacman = false;
 	bool wall = false;
 	bool ghost = true;
+	bool isBigDot = false;
+	//bool isEaten = false;
 	sf::Texture* texture;
 	sf::IntRect* textureBox;
 	
-	//Tile* left;
-	//Tile* right;
+
 public:
 	Tile(int xPos, int yPos);
-	Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, bool isWall);
+	Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, bool isWall, bool edible);
 	sf::Sprite* getSprite();
 	sf::Vector2i* getCenter();
 	bool getWallStatus();
 	sf::Vector2i* center;
+	void setBlank();
+	void eatBigDot();
+	void makeBigDot();
+	bool checkIfEaten();
+	bool checkIfBigDot();
+	bool canScore = true;
 };
 #endif

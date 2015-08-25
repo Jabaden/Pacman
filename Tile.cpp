@@ -11,7 +11,7 @@ Tile::Tile(int xPos, int yPos){
 	center->y = rint(yPos + (8 * GLOBAL_SCALE) / 2);
 }
 
-Tile::Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, bool isWall){
+Tile::Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, bool isWall, bool notEdible){
 	sprite = spr;
 	texture = txt;
 	sprite->setTexture(*txt, true);
@@ -20,11 +20,18 @@ Tile::Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, 
 	sprite->setPosition(xPos, yPos);
 	sprite->setScale(GLOBAL_SCALE, GLOBAL_SCALE);
 	this->wall = isWall;
+	this->isEaten = notEdible;
+	this->isBigDot = false;
 	center = new sf::Vector2i();
 	center->x = rint(xPos + sprite->getGlobalBounds().width / 2);
 	center->y = rint(yPos + sprite->getGlobalBounds().height / 2);
 
 	//tSprite3->setTexture(*pTexture, true);
+}
+void Tile::setBlank(){
+	this->textureBox->left = 0;
+	this->textureBox->top = 80;
+	this->getSprite()->setTextureRect(*textureBox);
 }
 
 sf::Sprite* Tile::getSprite(){
@@ -33,6 +40,29 @@ sf::Sprite* Tile::getSprite(){
 sf::Vector2i* Tile::getCenter(){
 	return center;
 }
+
+bool Tile::checkIfEaten(){
+	if (this->isEaten){
+		return true;
+	}
+	return false;
+}
+
+bool Tile::checkIfBigDot(){
+	if (this->isBigDot){
+		return true;
+	}
+	return false;
+}
+
+void Tile::eatBigDot(){
+	this->isBigDot = false;
+}
+
+void Tile::makeBigDot(){
+	this->isBigDot = true;
+}
+
 bool Tile::getWallStatus(){
 	return wall;
 }
