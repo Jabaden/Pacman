@@ -114,6 +114,9 @@ void Level::resetLevel(fstream& levelFile, sf::Texture* txt, int level){
 	if (level == 1){
 		levelFile.open("levelOne.txt");
 	}
+	if (level == 2){
+		levelFile.open("levelTwo.txt");
+	}
 	levelFile.clear(); //clears the EOF flag
 	levelFile.seekg(0, levelFile.ios::beg);
 	string currentLine;
