@@ -170,6 +170,10 @@ int main(int argc, char** argv)
 			if (pacman->dotsLeft == 0){
 				onLevelOne = false;
 				onLevelTwo = true;                                     //REPLACE LEVEL TRANSITION
+				red.setLevel(levelTwo);
+				orange.setLevel(levelTwo);
+				pink.setLevel(levelTwo);
+				teal.setLevel(levelTwo);
 			}
 			if ((red.hasKilledPacman(pacman) || orange.hasKilledPacman(pacman) || pink.hasKilledPacman(pacman) || teal.hasKilledPacman(pacman)) /*&& !waitingForRestart*/){
 				//cout << "NO PACMAN D:" << endl;
@@ -178,10 +182,18 @@ int main(int argc, char** argv)
 			}
 			//cout << dead << endl;
 			if (!dead){ //as long as pacman is still alive D:
-				red.moveGhost(&redClock, pacman, levelOne, &red);
-				teal.moveGhost(&tealClock, pacman, levelOne, &red);
-				pink.moveGhost(&pinkClock, pacman, levelOne, &red);
-				orange.moveGhost(&orangeClock, pacman, levelOne, &red);
+				if (onLevelOne){
+					red.moveGhost(&redClock, pacman, levelOne, &red);
+					teal.moveGhost(&tealClock, pacman, levelOne, &red);
+					pink.moveGhost(&pinkClock, pacman, levelOne, &red);
+					orange.moveGhost(&orangeClock, pacman, levelOne, &red);
+				}
+				else if (onLevelTwo){
+					red.moveGhost(&redClock, pacman, levelTwo, &red);
+					teal.moveGhost(&tealClock, pacman, levelTwo, &red);
+					pink.moveGhost(&pinkClock, pacman, levelTwo, &red);
+					orange.moveGhost(&orangeClock, pacman, levelTwo, &red);
+				}
 				pacman->checkPosition(&window);
 				if (isMoving == true){
 					pacman->movePlayer(&pacClock, pacman->getDirection());
