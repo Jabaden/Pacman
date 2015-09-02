@@ -36,7 +36,6 @@ bool onLevelTwo = false;
 bool mainMenu = true;
 int main(int argc, char** argv)
 { //456 is the start of pacman stuff
-	//sf::IntRect testRect(456, 0, 16, 16);
 
 	fstream levelOneFile;
 	fstream levelTwoFile;
@@ -65,7 +64,6 @@ int main(int argc, char** argv)
 	text.setFont(font);
 	text.setString("Press Space to start Pacman!");
 	text.setCharacterSize(24);
-	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	text.setPosition((672 / 2) - 100, 864 - 200);
 	text.setColor(sf::Color::Black);
 
@@ -114,7 +112,6 @@ int main(int argc, char** argv)
 	scoreText.setFont(font);
 	scoreText.setString("score " + to_string(pacman->score));
 	scoreText.setCharacterSize(24);
-	//text.setStyle(sf::Text::Bold | sf::Text::Underlined);
 	scoreText.setPosition((672 / 2), 864 - 120);
 	scoreText.setColor(sf::Color::White);
 
@@ -144,7 +141,6 @@ int main(int argc, char** argv)
 						isMoving = true;
 					}
 					else if (event.key.code == sf::Keyboard::D){
-						//cout << "i pressed right (D)" << endl;
 						pacman->setDirection(RIGHT);
 						isMoving = true;
 					}
@@ -169,18 +165,15 @@ int main(int argc, char** argv)
 		if (!mainMenu){
 			if (pacman->dotsLeft == 0){
 				onLevelOne = false;
-				onLevelTwo = true;                                     //REPLACE LEVEL TRANSITION
+				onLevelTwo = true;                                     
 				red.setLevel(levelTwo);
 				orange.setLevel(levelTwo);
 				pink.setLevel(levelTwo);
 				teal.setLevel(levelTwo);
 			}
 			if ((red.hasKilledPacman(pacman) || orange.hasKilledPacman(pacman) || pink.hasKilledPacman(pacman) || teal.hasKilledPacman(pacman)) /*&& !waitingForRestart*/){
-				//cout << "NO PACMAN D:" << endl;
-				cout << "im here" << endl;
 				dead = true;
 			}
-			//cout << dead << endl;
 			if (!dead){ //as long as pacman is still alive D:
 				if (onLevelOne){
 					red.moveGhost(&redClock, pacman, levelOne, &red);
@@ -224,10 +217,8 @@ int main(int argc, char** argv)
 					orange.resetGhost();
 					pink.resetGhost();
 					teal.resetGhost();
-					//pacman->movePlayer(&pacClock, pacman->getDirection());
 					pacman->restartPacman();
 					if (lives == 0){
-						//window.close(); //REPLACE THIS WITH GOING TO MAIN MENU
 						mainMenu = true;
 						levelOne->resetLevel(levelOneFile, pTexture, 1);
 						levelTwo->resetLevel(levelTwoFile, pTexture, 2);
@@ -246,13 +237,11 @@ int main(int argc, char** argv)
 					pink.toggleScatter();
 					orange.toggleScatter();
 					teal.toggleScatter();
-					//cout << "its been 20 seconds, game clock restarted!" << endl;
 
 				}
 			}
 			else{ //otherwise, make the ghosts scared
 				if (resetClock == false){//restart the godclock because its always running (but only once per pickup)
-					//cout << "godmode is on!" << endl;
 					pacman->godClock->restart();
 					resetClock = true;
 					red.togglePanic();
@@ -262,10 +251,8 @@ int main(int argc, char** argv)
 				}
 				else{
 					if (pacman->godClock->getElapsedTime().asSeconds() > 8){
-						//cout << "Oh no, god mode is off!" << endl;
 						pacman->toggleGod();
 						resetClock = false;
-						cout << pacman->checkGodStatus() << endl;
 						red.togglePanic();
 						teal.togglePanic();
 						pink.togglePanic();
@@ -313,13 +300,8 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-/*bool isDead = false;
-	bool isScatter = false;
-	bool isScared = false;
-	bool inPrison = true;
-	bool gameStart = true;*/
+
 void restartLevel(Player* pman, Ghost* red, Ghost* orange, Ghost* pink, Ghost* teal){
 	dead = false;
 	lives--;
 }
-//test update

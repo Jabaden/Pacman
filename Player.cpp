@@ -7,7 +7,6 @@ Player::Player(sf::Sprite* spr, sf::Texture* txt, Level* lvl){
 	sprite->setTextureRect(*textureBox);
 	sprite->setScale(GLOBAL_SCALE, GLOBAL_SCALE);
 	sprite->setPosition((4* 27) * GLOBAL_SCALE, (4*31) * GLOBAL_SCALE); //was -4, -4
-	//sprite->setOrigin(sprite->getGlobalBounds().width / 2, sprite->getGlobalBounds().height / 2);
 	center = new sf::Vector2i();
 	center->x = rint(sprite->getPosition().x + sprite->getGlobalBounds().width / 2);
 	center->y = rint(sprite->getPosition().y + sprite->getGlobalBounds().height / 2);
@@ -28,7 +27,6 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 	sf::Vector2i pacLocation = this->checkPosition();
 	float delta = clk->restart().asSeconds();
 	bool isAtCenter = checkCenter(pacLocation.x, pacLocation.y);
-	//cout << isAtCenter << endl;
 	switch (direction){
 	case 0: //up
 		if (isAtCenter){
@@ -71,7 +69,6 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 		this->sprite->move(-(speed * 0.016), 0);
 		if (this->sprite->getPosition().x < 10){
 			this->sprite->setPosition(666, this->sprite->getPosition().y);
-			cout << " OH SHIT " << endl;
 		}
 		break;
 	}
@@ -88,8 +85,6 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 			cout << "pacman is a " << this->isGod << endl;
 		}
 		dotsLeft--;
-		cout << dotsLeft << endl;
-		cout << score << endl;
 	}
 	center->x = rint(sprite->getPosition().x + sprite->getGlobalBounds().width / 2);
 	center->y = rint(sprite->getPosition().y + sprite->getGlobalBounds().height / 2);
@@ -101,8 +96,6 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 	if (this->tile->y == 13 && this->tile->x == 27){
 		this->sprite->setPosition(25.f, 299.525f);
 	}
-	//cout << this->tile->x << endl; //299.525 = y;
-	//cout << this->tile->y << endl;
 
 }
 void Player::setDirection(int dir){
@@ -113,33 +106,42 @@ void Player::setDirection(int dir){
 		return;
 	}
 	if (dir == 270 || dir == 90){
-		//if (dir == 90){
-			//if (level->getLevelMatrix()[((int)pacLocation.x) + 1][(int)pacLocation.y]->getWallStatus() == true){
-				//return;
-			//}
-		//}
-		//else{
-			//if (level->getLevelMatrix()[((int)pacLocation.x) - 1][(int)pacLocation.y]->getWallStatus() == true){
-				//return;
-			//}
-		//}
+		if (dir == 90){
+			if (level->getLevelMatrix()[((int)pacLocation.x) + 1][(int)pacLocation.y]->getWallStatus() == true){
+				return;
+			}
+		}
+		else{
+			if (level->getLevelMatrix()[((int)pacLocation.x) - 1][(int)pacLocation.y]->getWallStatus() == true){
+				return;
+			}
+		}
 		leftRight = true;
 		upDown = false;
 	}
 	else{
-		//if (dir == 0){
-			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
-				//return;
-			//}
-		//}
-		//else{
-			//if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) + 1]->getWallStatus() == true){
-				//return;
-			//}
-		//}
+		if (dir == 0){
+			if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) - 1]->getWallStatus() == true){
+				return;
+			}
+		}
+		else{
+			if (level->getLevelMatrix()[(int)pacLocation.x][((int)pacLocation.y) + 1]->getWallStatus() == true){
+				return;
+			}
+		}
 		leftRight = false;
 		upDown = true;
 	}
+	
+	if (this->direction == dir){
+		return;
+	}
+	this->sprite->setPosition(level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->center->x - (.5f * sprite->getGlobalBounds().height), level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->center->y - (.5f * sprite->getGlobalBounds().width));
+	center->x = rint(sprite->getPosition().x + sprite->getGlobalBounds().width / 2);
+	center->y = rint(sprite->getPosition().y + sprite->getGlobalBounds().height / 2);
+	tile->x = floor(((center->x) / (8 * GLOBAL_SCALE)));
+	tile->y = floor(((center->y) / (8 * GLOBAL_SCALE)));
 	this->direction = dir;
 }
 
@@ -212,7 +214,6 @@ void Player::playDeath(){
 }
 
 sf::Vector2i Player::checkPosition(){
-	//cout << "inside checkPosition " << tile->x << " " << tile->y << endl;
 	return *tile;
 }
 
@@ -230,9 +231,6 @@ void Player::toggleGod(){
 }
 
 sf::Vector2i Player::checkPosition(sf::RenderWindow* wnd){
-	//sf::Vector2i test;
-	//float xCoord = floor(((this->getSprite()->getPosition().x)/24));
-	//float yCoord = floor(((this->getSprite()->y().getPosition) / 24));
 	float xCoord = center->x;
 	float yCoord = center->y;
 	std::string newTitle = "";
@@ -245,7 +243,6 @@ sf::Vector2i Player::checkPosition(sf::RenderWindow* wnd){
 	sf::Vector2i testTwo = this->checkPosition();
 	newTitle += " and ";
 	sf::Vector2i* tileCenter = level->getLevelMatrix()[(int)testTwo.x][(int)testTwo.y]->getCenter();
-//	newTitle += ((int)(center->x) == (int)(tileCenter->x) && (int)(center->y) == (int)(tileCenter->y)) ? "true" : "false";
 	newTitle += std::to_string(checkCenter(testTwo.x, testTwo.y));
 	newTitle += " and ";
 	newTitle += std::to_string(tileCenter->x);
@@ -276,15 +273,27 @@ void Player::restartPacman(){
 }
 
 bool Player::checkCenter(int x, int y){
-	//cout << "x is " << x << " y is " << y << endl;
+	int paddingDistance = 3;
 	sf::Vector2i* tileCenter = level->getLevelMatrix()[x][y]->getCenter();
-	//cout << "the center of pacman is " << this->center->x << " " << this->center->y << endl;
-	//cout << "The center of the tile is " << tileCenter->x << " " << tileCenter->y << endl;
-	if (*(this->center) == *tileCenter){
-		return true;
+	if (this->direction == 0){
+		if ((this->center->y - tileCenter->y <= paddingDistance) && (this->center->y - tileCenter->y >= 0)){
+			return true;
+		}
+	}
+	else if (this->direction == 90){
+		if ((this->center->x - tileCenter->x >= -paddingDistance) && (this->center->x - tileCenter->x <= 0)){
+			return true;
+		}
+	}
+	else if (this->direction == 180){
+		if ((this->center->y - tileCenter->y >= -paddingDistance) && (this->center->y - tileCenter->y <= 0)){
+			return true;
+		}
 	}
 	else{
-		return false;
+		if ((this->center->x - tileCenter->x <= paddingDistance) && (this->center->x - tileCenter->x >= 0)){
+			return true;
+		}
 	}
-
+	return false;
 }

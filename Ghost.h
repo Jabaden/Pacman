@@ -6,11 +6,10 @@
 #include "Level.h"
 class Ghost{
 private:
-	//Tile* target;
 	sf::Sprite* sprite;
 	sf::Texture* texture;
 	int direction = 270;
-	float speed = 2.f;
+	float speed = 1.75f;
 	sf::IntRect* textureBox;
 	int aniFrame = 0;
 	sf::Vector2i* tile;
@@ -20,7 +19,7 @@ private:
 	sf::Vector2i* target;
 	sf::Vector2i* scatterTarget;
 	string color = "black";
-	 //to keep them from all teleporting at the same time at the start of a map
+	
 	
 public:
 	Ghost(sf::Sprite* spr, sf::Texture* txt, Level* lvl, string clr);

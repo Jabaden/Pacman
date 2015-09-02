@@ -336,7 +336,6 @@ void Ghost::moveGhost(sf::Clock* clk, Player* pman, Level* lvl, Ghost* redGhost)
 		this->sprite->setPosition(25.f, 299.525f);
 	}
 	if (this->isDead){
-		//cout << "x " << this->sprite->getPosition().x << " y " << this->sprite->getPosition().y << endl;
 		if (this->tile->x == 14 && this->tile->y == 11){
 			this->sprite->setPosition(264,299.525f);
 			this->deadClock->restart();
@@ -370,7 +369,6 @@ void Ghost::moveGhost(sf::Clock* clk, Player* pman, Level* lvl, Ghost* redGhost)
 			}
 		}
 		if (this->color == "Red"){
-			cout << this->inPrison << " GS " << this->gameStart << endl;
 		}
 		if (this->deadClock->getElapsedTime().asSeconds() > 2.f && this->gameStart == false && this->inPrison){
 			this->sprite->setPosition(264, 252.5f);
@@ -378,8 +376,6 @@ void Ghost::moveGhost(sf::Clock* clk, Player* pman, Level* lvl, Ghost* redGhost)
 			this->inPrison = false;
 		}
 	}
-	//cout << this->tile->y
-	//11,14 is the top of the box
 }
 
 bool Ghost::isIntersection(){
@@ -394,17 +390,13 @@ bool Ghost::isIntersection(){
 
 sf::Vector2i Ghost::findRedTarget(Player* pacman){
 	sf::Vector2i temp = pacman->checkPosition();
-	//cout << "inside findRedTarget" << temp.x << " " << temp.y << endl;
-	//return pacman->checkPosition();
-	//cout << "inside red target" << endl;
 	return temp;
 }
 
 sf::Vector2i Ghost::findPinkTarget(Player* pacman){
 	sf::Vector2i tempTarget = pacman->checkPosition();
-	//cout << "inside findPinkTarget" << tempTarget.x << " " << tempTarget.y << endl;
 	if (pacman->getDirection() == 0){
-		tempTarget.x = tempTarget.x - 4; //this is a strange exception in the games code
+		tempTarget.x = tempTarget.x - 4; //this is a strange exception in the original games code
 		tempTarget.y = tempTarget.y - 4; 
 	}
 	else if (pacman->getDirection() == 90){
@@ -428,7 +420,6 @@ sf::Vector2i Ghost::findPinkTarget(Player* pacman){
 	if (tempTarget.y > 31){
 		tempTarget.y = 31;
 	}
-	//cout << "Pinks target is, " << tempTarget.x << " " << tempTarget.y << endl;
 	return tempTarget;
 }
 int Ghost::findShortestpath(Level* lvl){
@@ -442,8 +433,6 @@ int Ghost::findShortestpath(Level* lvl){
 	double returnDistance = 0;
 	sf::Vector2i* tileCenter;
 	sf::Vector2i ghostLocation = this->checkGhostPosition();
-	//cout << "target in FSP is " << this->target->x << " " << this->target->y << endl;
-	//cout << "ghostLocation " << ghostLocation.x << " " << ghostLocation.y << endl;
 	sf::Vector2i* targetCenter = (lvl->getLevelMatrix()[this->target->x][this->target->y]->getCenter());
 	if (dir != 180){ //check up
 		if (level->getLevelMatrix()[((int)ghostLocation.x) + 0][((int)ghostLocation.y) - 1]->getWallStatus() == false){
@@ -489,18 +478,8 @@ int Ghost::findShortestpath(Level* lvl){
 }
 
 double Ghost::findDistance(sf::Vector2i* ghostCenter, sf::Vector2i* targetCenter){ //returns the distance between two points
-	/*
-	double Distance(double dX0, double dY0, double dX1, double dY1)
-	{
-	return sqrt((dX1 - dX0)*(dX1 - dX0) + (dY1 - dY0)*(dY1 - dY0));
-	}
-	*/
 	return sqrt((targetCenter->x - ghostCenter->x) * (targetCenter->x - ghostCenter->x) + (targetCenter->y - ghostCenter->y) * (targetCenter->y - ghostCenter->y));
 }
-
-//int Ghost::getDirection(){
-	//return this->direction;
-//}
 
 sf::Vector2i Ghost::findTealTarget(Player* pman, Ghost* redGhost){
 	sf::Vector2i pacLocation = pman->checkPosition();
@@ -538,7 +517,6 @@ sf::Vector2i Ghost::findTealTarget(Player* pman, Ghost* redGhost){
 	if (target.y > 31){
 		target.y = 31;
 	}
-	//cout << "Teals target is " << target.x << " " << target.y << endl;
 	return target;
 }
 
@@ -555,7 +533,6 @@ sf::Vector2i Ghost::findOrangeTarget(Player* pman){
 		targetResult.x = 1;
 		targetResult.y = 31;
 	}
-	//cout << "Orange's target is " << targetResult.x << " " << targetResult.y << endl;
 	return targetResult;
 }
 
@@ -588,7 +565,6 @@ bool Ghost::hasKilledPacman(Player* pman){
 		return true;
 	}
 	else{
-		//cout << "im here" << endl;
 		return false;
 	}
 }
@@ -609,6 +585,3 @@ void Ghost::resetFTA(){
 	this->forwardTileArray[3] = 0;
 }
 
-//sf::Vector2i pacLocation = this->checkPosition();
-//float delta = clk->restart().asSeconds();
-//bool isAtCenter = checkCenter(pacLocation.x, pacLocation.y);

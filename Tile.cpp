@@ -26,7 +26,6 @@ Tile::Tile(sf::Sprite* spr, sf::Texture* txt, int x, int y, int xPos, int yPos, 
 	center->x = rint(xPos + sprite->getGlobalBounds().width / 2);
 	center->y = rint(yPos + sprite->getGlobalBounds().height / 2);
 
-	//tSprite3->setTexture(*pTexture, true);
 }
 void Tile::setBlank(){
 	this->textureBox->left = 0;

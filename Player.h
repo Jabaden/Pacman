@@ -13,7 +13,7 @@ class Player{
 private:
 	sf::Sprite* sprite;
 	sf::Texture* texture;
-	float speed = 2.f;
+	float speed = 1.75f;
 	int direction = 90;
 	bool isGod = false;
 	sf::IntRect* textureBox;

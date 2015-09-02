@@ -11,7 +11,6 @@ private:
 	bool wall = false;
 	bool ghost = true;
 	bool isBigDot = false;
-	//bool isEaten = false;
 	sf::Texture* texture;
 	sf::IntRect* textureBox;
 	
