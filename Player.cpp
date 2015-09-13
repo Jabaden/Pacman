@@ -297,3 +297,7 @@ bool Player::checkCenter(int x, int y){
 	}
 	return false;
 }
+
+//void Player::setLevel(Level* lvl){
+	//this->level = lvl;
+//}

@@ -52,6 +52,7 @@ public:
 	void setLevel(Level* lvl);
 	int dotsLeft = 1000;
 	int score = 0;
+	//void setLevel(Level* lvl);
 	
 };
 #endif

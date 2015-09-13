@@ -45,6 +45,9 @@ Level::Level(fstream& levelFile, sf::Texture* txt, int level){
 		{
 			type = stoi(sType);
 		}
+		else{
+			type = 1000;
+		}
 		//cout << "amount is " << amount << " and type is " << type << endl;
 		//cout << "The current column is " << column << " and the current row is " << row << endl;
 			for (int i = 0; i < amount; i++){
@@ -81,8 +84,8 @@ Level::Level(fstream& levelFile, sf::Texture* txt, int level){
 				else if (type == 0){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, true);
 				}
-				else if (sType == "B"){
-					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, true);
+				else if (sType == "A"){
+					levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 240, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true, true);
 				}
 				else{
 					continue;
@@ -150,6 +153,9 @@ void Level::resetLevel(fstream& levelFile, sf::Texture* txt, int level){
 		{
 			type = stoi(sType);
 		}
+		else{
+			type = 1000;
+		}
 		//cout << "amount is " << amount << " and type is " << type << endl;
 		//cout << "The current column is " << column << " and the current row is " << row << endl;
 		for (int i = 0; i < amount; i++){
@@ -186,8 +192,8 @@ void Level::resetLevel(fstream& levelFile, sf::Texture* txt, int level){
 			else if (type == 0){
 				levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, true);
 			}
-			else if (sType == "B"){
-				levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 80, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, true);
+			else if (sType == "A"){
+				levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 240, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true, true);
 			}
 			else{
 				continue;

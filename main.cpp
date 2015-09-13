@@ -165,11 +165,17 @@ int main(int argc, char** argv)
 		if (!mainMenu){
 			if (pacman->dotsLeft == 0){
 				onLevelOne = false;
-				onLevelTwo = true;                                     
+				onLevelTwo = true;              
+				pacman->setLevel(levelTwo);
 				red.setLevel(levelTwo);
 				orange.setLevel(levelTwo);
 				pink.setLevel(levelTwo);
 				teal.setLevel(levelTwo);
+				red.resetGhost();
+				orange.resetGhost();
+				pink.resetGhost();
+				teal.resetGhost();
+				pacman->restartPacman();
 			}
 			if ((red.hasKilledPacman(pacman) || orange.hasKilledPacman(pacman) || pink.hasKilledPacman(pacman) || teal.hasKilledPacman(pacman)) /*&& !waitingForRestart*/){
 				dead = true;
@@ -201,7 +207,7 @@ int main(int argc, char** argv)
 					}
 				}
 			}
-			else{
+			else{ //if dead
 				if (aniClock.getElapsedTime().asMilliseconds() >= aniSpeed){
 					pacman->playDeath();
 					aniClock.restart();
@@ -223,6 +229,7 @@ int main(int argc, char** argv)
 						levelOne->resetLevel(levelOneFile, pTexture, 1);
 						levelTwo->resetLevel(levelTwoFile, pTexture, 2);
 						lives = 3;
+						pacman->setLevel(levelOne);
 					}
 					waitingForRestart = false;                                                  //RESTART THE GAME HERE
 					gameClock.restart();
