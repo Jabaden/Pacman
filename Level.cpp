@@ -59,6 +59,7 @@ Level::Level(fstream& levelFile, sf::Texture* txt, int level){
 				else if (type == 2){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 24, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, false);
 					levelMatrix[column][row]->makeBigDot();
+					numDots++;
 				}
 				else if (type == 3){
 					levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true, true);
@@ -167,6 +168,7 @@ void Level::resetLevel(fstream& levelFile, sf::Texture* txt, int level){
 			else if (type == 2){
 				levelMatrix[column][row] = new Tile(tempSprite, txt, 8, 24, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, false, false);
 				levelMatrix[column][row]->makeBigDot();
+				numDots++;
 			}
 			else if (type == 3){
 				levelMatrix[column][row] = new Tile(tempSprite, txt, 0, 0, 8 * column * GLOBAL_SCALE, 8 * row * GLOBAL_SCALE, true, true);

@@ -554,9 +554,10 @@ sf::Vector2i Ghost::findRandomTarget(){
 
 bool Ghost::hasKilledPacman(Player* pman){
 	if (this->center->x == pman->getCenter()->x && this->center->y == pman->getCenter()->y){
-		if (pman->checkGodStatus()){
+		if (pman->checkGodStatus() && this->isDead == false){
 			pman->score += 500;
 			this->isDead = true;
+			pman->playGhostMunchSound();
 			return false;
 		}
 		if (this->isDead){

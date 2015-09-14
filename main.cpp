@@ -164,18 +164,40 @@ int main(int argc, char** argv)
 		}
 		if (!mainMenu){
 			if (pacman->dotsLeft == 0){
-				onLevelOne = false;
-				onLevelTwo = true;              
-				pacman->setLevel(levelTwo);
-				red.setLevel(levelTwo);
-				orange.setLevel(levelTwo);
-				pink.setLevel(levelTwo);
-				teal.setLevel(levelTwo);
-				red.resetGhost();
-				orange.resetGhost();
-				pink.resetGhost();
-				teal.resetGhost();
-				pacman->restartPacman();
+				if (onLevelOne){
+					onLevelOne = false;
+					onLevelTwo = true;
+					pacman->setLevel(levelTwo);
+					red.setLevel(levelTwo);
+					orange.setLevel(levelTwo);
+					pink.setLevel(levelTwo);
+					teal.setLevel(levelTwo);
+					red.resetGhost();
+					orange.resetGhost();
+					pink.resetGhost();
+					teal.resetGhost();
+					pacman->restartPacman();
+				}
+				else{
+					onLevelTwo = false;
+					onLevelOne = false;
+					levelOne->resetLevel(levelOneFile, pTexture, 1);
+					levelTwo->resetLevel(levelTwoFile, pTexture, 2);
+					lives = 3;
+					pacman->setLevel(levelOne);
+					red.setLevel(levelOne);
+					orange.setLevel(levelOne);
+					pink.setLevel(levelOne);
+					teal.setLevel(levelOne);
+					red.resetGhost();
+					orange.resetGhost();
+					pink.resetGhost();
+					teal.resetGhost();
+					pacman->restartPacman();
+					mainMenu = true;
+					
+				}
+				
 			}
 			if ((red.hasKilledPacman(pacman) || orange.hasKilledPacman(pacman) || pink.hasKilledPacman(pacman) || teal.hasKilledPacman(pacman)) /*&& !waitingForRestart*/){
 				dead = true;
@@ -214,6 +236,7 @@ int main(int argc, char** argv)
 				}
 				if (waitingForRestart == false){
 					pacman->restartClock->restart();
+					pacman->playPacDeathSound();
 					waitingForRestart = true;
 				}
 				if (waitingForRestart && pacman->restartClock->getElapsedTime().asSeconds() > 4.f){

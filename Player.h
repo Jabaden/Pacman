@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <math.h>
 #include <iostream>
 #include <string>
@@ -21,6 +22,10 @@ private:
 	sf::Vector2i* center;
 	sf::Vector2i* tile;
 	Level* level;
+	sf::SoundBuffer* pacBuffer;
+	sf::Sound* dotMunchSound;
+	sf::Sound* pacDeathSound;
+	sf::Sound* ghostMunchSound;
 
 
 public:
@@ -33,6 +38,9 @@ public:
 	void setRectX(sf::IntRect* rct, int x);
 	void setRectY(sf::IntRect* rct, int y);
 	void toggleGod();
+	void playDotMunchSound();
+	void playGhostMunchSound();
+	void playPacDeathSound();
 
 	sf::IntRect* getTextureBox();
 

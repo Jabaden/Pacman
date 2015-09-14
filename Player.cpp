@@ -19,6 +19,18 @@ Player::Player(sf::Sprite* spr, sf::Texture* txt, Level* lvl){
 	godClock = new sf::Clock();
 	restartClock = new sf::Clock();
 	this->dotsLeft = lvl->dots;
+
+	pacBuffer = new sf::SoundBuffer();
+	ghostMunchSound = new sf::Sound();
+	dotMunchSound = new sf::Sound();
+	pacDeathSound = new sf::Sound();
+	ghostMunchSound->setBuffer(*pacBuffer);
+	dotMunchSound->setBuffer(*pacBuffer);
+	pacDeathSound->setBuffer(*pacBuffer);
+	dotMunchSound->setVolume(20);
+	pacDeathSound->setVolume(20);
+	ghostMunchSound->setVolume(20);
+
 }
 sf::Sprite* Player::getSprite(){
 	return sprite;
@@ -77,6 +89,9 @@ void Player::movePlayer(sf::Clock* clk, int direction){
 		level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->canScore = false;
 		level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->setBlank();
 		score += 10;
+		this->playDotMunchSound();
+		//cout << this->dotsLeft << endl;
+		//cout << this->isDead << endl;
 		if (level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->checkIfBigDot()){ //if its a super dot turn into A GOD
 			score += 10;
 			level->getLevelMatrix()[((int)pacLocation.x)][(int)pacLocation.y]->eatBigDot();
@@ -219,6 +234,7 @@ sf::Vector2i Player::checkPosition(){
 
 void Player::setLevel(Level* lvl){
 	this->level = lvl;
+	this->dotsLeft = lvl->dots;
 }
 
 void Player::toggleGod(){
@@ -296,6 +312,19 @@ bool Player::checkCenter(int x, int y){
 		}
 	}
 	return false;
+}
+
+void Player::playPacDeathSound(){
+	this->pacBuffer->loadFromFile("pacman_death.wav");
+	this->pacDeathSound->play();
+}
+void Player::playDotMunchSound(){
+	pacBuffer->loadFromFile("pacman_chomp.wav");
+	dotMunchSound->play();
+}
+void Player::playGhostMunchSound(){
+	pacBuffer->loadFromFile("pacman_eatghost.wav");
+	ghostMunchSound->play();
 }
 
 //void Player::setLevel(Level* lvl){
